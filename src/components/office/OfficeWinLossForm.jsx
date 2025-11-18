@@ -41,6 +41,7 @@ export default function OfficeWinLossForm({
   winLosses,
   onUpdate,
   submission,
+  region,
   market,
   isSubmissionPeriod,
   onNetworkError,
@@ -124,7 +125,7 @@ export default function OfficeWinLossForm({
         const newEntry = await WinLoss.create({
           ...entryToSave,
           submission_id: submissionId, // Use the ID from ensureSubmissionHasId
-          region: submission?.region || market?.region,
+          region: region || submission?.region || market?.region || 'Global',
           month: submission?.month,
           office_location: market?.name
         });
