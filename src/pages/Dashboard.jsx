@@ -35,8 +35,8 @@ export default function Dashboard() {
       } else if (selectedRole === 'president') {
         navigate(createPageUrl("LeadershipDashboard"));
       } else if (selectedRole === 'business_line_leader') {
-        // Business Line Leaders go directly to their form (similar to MD report)
-        navigate(createPageUrl("OfficeReport"));
+          // Business Line Leaders go directly to their form
+          navigate(createPageUrl("BusinessLineReport"));
       } else if (selectedRole === 'md' || selectedRole === 'rmd') {
         // MD and RMD need to choose between report and dashboard
         setCurrentView('action-selection');

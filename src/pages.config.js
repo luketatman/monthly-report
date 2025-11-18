@@ -9,6 +9,7 @@ import RegionalStructure from './pages/RegionalStructure';
 import UpdateSentiments from './pages/UpdateSentiments';
 import RegionalDashboard from './pages/RegionalDashboard';
 import ViewOfficeSubmission from './pages/ViewOfficeSubmission';
+import BusinessLineReport from './pages/BusinessLineReport';
 import __Layout from './Layout.jsx';
 
 
@@ -24,6 +25,7 @@ export const PAGES = {
     "UpdateSentiments": UpdateSentiments,
     "RegionalDashboard": RegionalDashboard,
     "ViewOfficeSubmission": ViewOfficeSubmission,
+    "BusinessLineReport": BusinessLineReport,
 }
 
 export const pagesConfig = {
