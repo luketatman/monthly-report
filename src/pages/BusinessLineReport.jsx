@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { WinLoss, Pitch, PersonnelUpdate } from "@/entities/all";
+import { WinLoss, Pitch, PersonnelUpdate, ServiceLineSubmission } from "@/entities/all";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -97,16 +97,25 @@ export default function BusinessLineReport() {
         full_name: `${pinData.title} (${businessLineName})`
       });
 
-      // Initialize empty submission for Business Line Leader
-      const newSubmission = {
+      // Load or create service line submission
+      const existingSubmissions = await ServiceLineSubmission.filter({
         business_line: businessLineName,
-        managing_director: generatedEmail,
-        month: selectedMonth,
-        status: "draft",
-        overall_sentiment: { score: 5, commentary: "" }
-      };
+        month: selectedMonth
+      });
 
-      setSubmission(newSubmission);
+      let serviceLineSubmission;
+      if (existingSubmissions.length > 0) {
+        serviceLineSubmission = existingSubmissions[0];
+      } else {
+        serviceLineSubmission = await ServiceLineSubmission.create({
+          business_line: businessLineName,
+          month: selectedMonth,
+          status: "draft",
+          overall_sentiment: { score: 5, commentary: "" },
+          persisting_issues: ""
+        });
+      }
+      setSubmission(serviceLineSubmission);
       setIsSubmissionPeriod(true);
 
       // Load Win/Loss data for this business line
@@ -226,19 +235,26 @@ export default function BusinessLineReport() {
   };
 
   const submitReport = async () => {
-    if (!submission || submission.status === "submitted") return;
+    if (!isSubmittable()) {
+      setError("Please complete all required sections before submitting.");
+      return;
+    }
 
     setSaving(true);
     setError(null);
 
-    const finalSubmissionData = {
-      ...submission,
-      status: "submitted",
-      submitted_at: new Date().toISOString()
-    };
-
-    setSubmission(finalSubmissionData);
-    setSaving(false);
+    try {
+      const submittedData = await ServiceLineSubmission.update(submission.id, {
+        status: "submitted",
+        submitted_at: new Date().toISOString()
+      });
+      setSubmission(submittedData);
+    } catch (err) {
+      console.error("Submission error:", err);
+      setError("An error occurred during submission. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleLogout = async () => {
