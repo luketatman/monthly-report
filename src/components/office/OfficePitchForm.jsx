@@ -10,8 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Target, PlusCircle, Trash2 } from "lucide-react";
 import { Pitch } from "@/entities/Pitch";
 
-const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services"];
-const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Other"];
+const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt", "Equity"];
+const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Data Center", "Other"];
 const services = ["Brokerage", "Project Mgmt", "Workplace", "Valuation", "Capital Markets", "Other"];
 const originationSources = ["Referral", "Broker Lead", "Marketing", "Cross-Sell", "Existing Client", "Other"];
 const stages = ["Meeting Scheduled", "Waiting to Hear Back", "Out for Signature", "Lost"];
@@ -25,6 +25,7 @@ const emptyEntry = {
   origination_source: "",
   transaction_type: "",
   asset_type: "",
+  asset_type_other: "",
   lead_broker: "",
   square_footage: "",
   engagement_type: "One-off",
@@ -263,6 +264,21 @@ export default function OfficePitchForm({
                 </Select>
               </div>
             </div>
+
+            {/* Asset Type Other Specification */}
+            {entry.asset_type === 'Other' && (
+              <div>
+                <Label className="text-sm font-medium text-slate-700 mb-2 block">Please Specify Asset Type</Label>
+                <Input
+                  placeholder="Please specify..."
+                  value={entry.asset_type_other || ''}
+                  onChange={(e) => handleUpdate(index, 'asset_type_other', e.target.value)}
+                  disabled={!isSubmissionPeriod || saving}
+                  onBlur={() => handleSave(index)}
+                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400"
+                />
+              </div>
+            )}
 
             <div className="grid md:grid-cols-3 gap-4">
               <div>

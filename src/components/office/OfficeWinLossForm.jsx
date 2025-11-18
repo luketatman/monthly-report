@@ -11,8 +11,8 @@ import { Award, PlusCircle, Trash2 } from "lucide-react";
 import { WinLoss } from "@/entities/WinLoss";
 
 const outcomes = ["Win", "Loss"];
-const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services"];
-const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Other"];
+const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt", "Equity"];
+const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Data Center", "Other"];
 const services = ["Valuation", "Project Management", "Lease Administration", "Facility Management"];
 
 // Helper array for month names
@@ -25,6 +25,7 @@ const emptyEntry = {
   client: "",
   transaction_type: "",
   asset_type: "",
+  asset_type_other: "",
   budget_year_revenue_impact: "",
   total_revenue_impact: "",
   lead_broker: "",
@@ -302,6 +303,21 @@ export default function OfficeWinLossForm({
                 </Select>
               </div>
             </div>
+
+            {/* Asset Type Other Specification */}
+            {entry.asset_type === 'Other' && (
+              <div>
+                <Label className="text-sm font-medium text-slate-50 mb-2 block">Please Specify Asset Type</Label>
+                <Input
+                  placeholder="Please specify..."
+                  value={entry.asset_type_other || ''}
+                  onChange={(e) => handleUpdate(index, 'asset_type_other', e.target.value)}
+                  disabled={!isSubmissionPeriod || saving}
+                  onBlur={() => handleSave(index)}
+                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400"
+                />
+              </div>
+            )}
 
             {/* Fourth Row */}
             <div className="grid md:grid-cols-3 gap-4">
