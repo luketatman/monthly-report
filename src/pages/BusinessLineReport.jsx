@@ -19,8 +19,8 @@ import {
   Check,
   AlertTriangle,
   XCircle,
-  Info,
-} from "lucide-react";
+  Info } from
+"lucide-react";
 import { format, addMonths } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -90,11 +90,11 @@ export default function BusinessLineReport() {
       setBusinessLine(businessLineName);
 
       const generatedEmail = `${pinData.title.toLowerCase().replace(/\s+/g, '-')}-${businessLineName.toLowerCase().replace(/\s+/g, '-')}@avisonyoung.com`;
-      
-      setUser({ 
-        email: generatedEmail, 
-        role: pinData.title, 
-        full_name: `${pinData.title} (${businessLineName})` 
+
+      setUser({
+        email: generatedEmail,
+        role: pinData.title,
+        full_name: `${pinData.title} (${businessLineName})`
       });
 
       // Initialize empty submission for Business Line Leader
@@ -262,11 +262,11 @@ export default function BusinessLineReport() {
   const getValidationStatus = () => {
     if (!submission) {
       return {
-        overallCommentary: false,
+        overallCommentary: false
       };
     }
     return {
-      overallCommentary: submission.overall_sentiment && submission.overall_sentiment.commentary && submission.overall_sentiment.commentary.trim() !== '',
+      overallCommentary: submission.overall_sentiment && submission.overall_sentiment.commentary && submission.overall_sentiment.commentary.trim() !== ''
     };
   };
 
@@ -274,7 +274,7 @@ export default function BusinessLineReport() {
     const status = getValidationStatus();
     return Object.values(status).every(Boolean);
   };
-  
+
   const validationStatus = getValidationStatus();
 
   if (pageLoading) {
@@ -284,8 +284,8 @@ export default function BusinessLineReport() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-slate-600">Loading your business line data...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   if (submission && submission.status === "submitted") {
@@ -312,8 +312,8 @@ export default function BusinessLineReport() {
             </Button>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!isConfirmed) {
@@ -332,16 +332,16 @@ export default function BusinessLineReport() {
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
-            {error && (
-              <Alert variant="destructive">
+            {error &&
+            <Alert variant="destructive">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>An Error Occurred</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            )}
+            }
 
-            {pinData && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            {pinData &&
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <Building2 className="w-5 h-5 text-green-600" />
                   <span className="font-semibold text-green-800">Your Business Line</span>
@@ -350,7 +350,7 @@ export default function BusinessLineReport() {
                   {pinData.office_location}
                 </p>
               </div>
-            )}
+            }
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-900 flex items-center gap-2">
@@ -362,15 +362,15 @@ export default function BusinessLineReport() {
                   <SelectValue placeholder="Choose month" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableMonths.map((month) => (
-                    <SelectItem key={month.value} value={month.value}>{month.label}</SelectItem>
-                  ))}
+                  {availableMonths.map((month) =>
+                  <SelectItem key={month.value} value={month.value}>{month.label}</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
 
-            {selectedMonth && pinData && !error && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            {selectedMonth && pinData && !error &&
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
                   <Building2 className="w-5 h-5 text-blue-600" />
                   <span className="font-semibold text-blue-800">Confirmation</span>
@@ -380,15 +380,15 @@ export default function BusinessLineReport() {
                   for <strong>{availableMonths.find((m) => m.value === selectedMonth)?.label}</strong>.
                 </p>
                 <Button
-                  onClick={handleConfirmSelection}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  disabled={loading || !pinData}
-                >
+                onClick={handleConfirmSelection}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={loading || !pinData}>
+
                   <Check className="w-4 h-4 mr-2" />
                   {loading ? "Loading..." : "Confirm & Start Report"}
                 </Button>
               </div>
-            )}
+            }
 
             <div className="text-center">
               <Button variant="outline" onClick={() => navigate(createPageUrl("Dashboard"))}>
@@ -398,8 +398,8 @@ export default function BusinessLineReport() {
             </div>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -423,14 +423,14 @@ export default function BusinessLineReport() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Badge variant={submission?.status === "submitted" ? "default" : "secondary"}>
-                    {submission?.status === "submitted" ? (
-                      <>
+                    {submission?.status === "submitted" ?
+                    <>
                         <CheckCircle className="w-4 h-4 mr-1" />
                         Submitted
-                      </>
-                    ) : "Draft"}
+                      </> :
+                    "Draft"}
                   </Badge>
-                  <Button variant="outline" size="sm" onClick={handleBackToSelection}>
+                  <Button variant="outline" size="sm" onClick={handleBackToSelection} className="bg-slate-950 px-3 text-xs font-medium rounded-md inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input shadow-sm hover:bg-accent hover:text-accent-foreground h-8">
                     <Map className="w-4 h-4 mr-2" />
                     Change Selection
                   </Button>
@@ -439,13 +439,13 @@ export default function BusinessLineReport() {
             </CardContent>
           </Card>
 
-          {error && (
-            <Alert variant="destructive">
+          {error &&
+          <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>An Error Occurred</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
-          )}
+          }
 
           {/* Progress Card */}
           <Card className="border-green-200 bg-green-50">
@@ -461,57 +461,57 @@ export default function BusinessLineReport() {
             </CardContent>
           </Card>
 
-          {loading ? (
-            <div className="text-center p-8">
+          {loading ?
+          <div className="text-center p-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <p className="text-slate-600">Loading {businessLine} report for {getDisplayMonth()}</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
+            </div> :
+
+          <div className="space-y-6">
               <OfficeWinLossForm
-                region="Global"
-                market={{ name: businessLine }}
-                month={selectedMonth}
-                winLosses={winLosses}
-                onUpdate={handleWinLossUpdate}
-                submission={submission}
-                isSubmissionPeriod={isSubmissionPeriod}
-                onNetworkError={setError}
-                ensureSubmissionHasId={ensureSubmissionHasId}
-                disabled={submission?.status === "submitted"}
-              />
+              region="Global"
+              market={{ name: businessLine }}
+              month={selectedMonth}
+              winLosses={winLosses}
+              onUpdate={handleWinLossUpdate}
+              submission={submission}
+              isSubmissionPeriod={isSubmissionPeriod}
+              onNetworkError={setError}
+              ensureSubmissionHasId={ensureSubmissionHasId}
+              disabled={submission?.status === "submitted"} />
+
 
               <OfficePitchForm
-                region="Global"
-                market={{ name: businessLine }}
-                month={selectedMonth}
-                pitches={pitches}
-                onUpdate={handlePitchUpdate}
-                submission={submission}
-                isSubmissionPeriod={isSubmissionPeriod}
-                onNetworkError={setError}
-                ensureSubmissionHasId={ensureSubmissionHasId}
-                disabled={submission?.status === "submitted"}
-              />
+              region="Global"
+              market={{ name: businessLine }}
+              month={selectedMonth}
+              pitches={pitches}
+              onUpdate={handlePitchUpdate}
+              submission={submission}
+              isSubmissionPeriod={isSubmissionPeriod}
+              onNetworkError={setError}
+              ensureSubmissionHasId={ensureSubmissionHasId}
+              disabled={submission?.status === "submitted"} />
+
 
               <OfficePersonnelForm
-                region="Global"
-                market={{ name: businessLine }}
-                month={selectedMonth}
-                personnelUpdates={personnelUpdates}
-                onUpdate={handlePersonnelUpdate}
-                submission={submission}
-                isSubmissionPeriod={isSubmissionPeriod}
-                onNetworkError={setError}
-                ensureSubmissionHasId={ensureSubmissionHasId}
-                disabled={submission?.status === "submitted"}
-              />
+              region="Global"
+              market={{ name: businessLine }}
+              month={selectedMonth}
+              personnelUpdates={personnelUpdates}
+              onUpdate={handlePersonnelUpdate}
+              submission={submission}
+              isSubmissionPeriod={isSubmissionPeriod}
+              onNetworkError={setError}
+              ensureSubmissionHasId={ensureSubmissionHasId}
+              disabled={submission?.status === "submitted"} />
+
 
               <OfficeOverallSentiment
-                submission={submission}
-                onUpdate={(sentiment) => updateSubmission({ overall_sentiment: sentiment })}
-                disabled={submission?.status === "submitted"}
-              />
+              submission={submission}
+              onUpdate={(sentiment) => updateSubmission({ overall_sentiment: sentiment })}
+              disabled={submission?.status === "submitted"} />
+
 
               <Card className="shadow-lg">
                 <CardHeader>
@@ -519,28 +519,28 @@ export default function BusinessLineReport() {
                 </CardHeader>
                 <CardContent>
                   <Textarea
-                    value={submission?.persisting_issues || ""}
-                    onChange={(e) => handleIssuesUpdate(e.target.value)}
-                    placeholder="Describe any ongoing issues or areas where you need assistance..."
-                    disabled={submission?.status === "submitted"}
-                    className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400 min-h-[150px]"
-                  />
+                  value={submission?.persisting_issues || ""}
+                  onChange={(e) => handleIssuesUpdate(e.target.value)}
+                  placeholder="Describe any ongoing issues or areas where you need assistance..."
+                  disabled={submission?.status === "submitted"}
+                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400 min-h-[150px]" />
+
                 </CardContent>
               </Card>
             </div>
-          )}
+          }
 
           {/* Action Buttons */}
-          {submission?.status !== "submitted" && (
-            <Card className="border-slate-200">
+          {submission?.status !== "submitted" &&
+          <Card className="border-slate-200">
               <CardContent className="p-6 space-y-4">
-                {isSubmittable() ? (
-                  <div className="text-center text-green-700 font-semibold flex items-center justify-center gap-2 p-4 bg-green-50 border border-green-200 rounded-lg">
+                {isSubmittable() ?
+              <div className="text-center text-green-700 font-semibold flex items-center justify-center gap-2 p-4 bg-green-50 border border-green-200 rounded-lg">
                     <CheckCircle className="w-5 h-5" />
                     All required sections are complete. You can now submit the report.
-                  </div>
-                ) : (
-                  <div className="bg-amber-50 border-l-4 border-amber-500 text-amber-800 p-4 rounded-md" role="alert">
+                  </div> :
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 text-amber-800 p-4 rounded-md" role="alert">
                     <p className="font-bold mb-3">Complete these sections to submit your report:</p>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-center gap-2">
@@ -555,23 +555,23 @@ export default function BusinessLineReport() {
                       </p>
                     </div>
                   </div>
-                )}
+              }
 
                 <div className="flex justify-end pt-4">
                   <Button
-                    onClick={submitReport}
-                    disabled={saving || loading || !isSubmittable()}
-                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed"
-                  >
+                  onClick={submitReport}
+                  disabled={saving || loading || !isSubmittable()}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed">
+
                     <Send className="w-4 h-4 mr-2" />
                     Submit Report
                   </Button>
                 </div>
               </CardContent>
             </Card>
-          )}
+          }
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
