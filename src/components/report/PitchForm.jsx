@@ -271,8 +271,8 @@ export default function PitchForm({ submission, disabled, markets }) {
                 <Input type="number" placeholder="Estimated Current Year Revenue Impact" value={entry.budget_year_revenue_impact || ''} onChange={e => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Total Revenue Impact</Label>
-                <Input type="number" placeholder="Estimated Total Revenue Impact" value={entry.total_revenue_impact || ''} onChange={e => handleUpdate(index, 'total_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
+                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Total Revenue Impact (Approx. next 3 years)</Label>
+                <Input type="number" placeholder="Estimated Total Revenue Impact (Approx. next 3 years)" value={entry.total_revenue_impact || ''} onChange={e => handleUpdate(index, 'total_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
               </div>
             </div>
 

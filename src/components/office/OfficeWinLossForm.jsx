@@ -263,10 +263,10 @@ export default function OfficeWinLossForm({
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-slate-50 mb-2 block">Estimated Total Revenue Impact</Label>
+                <Label className="text-sm font-medium text-slate-50 mb-2 block">Estimated Total Revenue Impact (Approx. next 3 years)</Label>
                 <Input
                   type="number"
-                  placeholder="Estimated Total Revenue Impact"
+                  placeholder="Estimated Total Revenue Impact (Approx. next 3 years)"
                   value={entry.total_revenue_impact || ''}
                   onChange={(e) => handleUpdate(index, 'total_revenue_impact', e.target.value)}
                   disabled={!isSubmissionPeriod || saving}
