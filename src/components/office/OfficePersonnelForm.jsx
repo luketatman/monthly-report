@@ -164,7 +164,7 @@ export default function OfficePersonnelForm({
             <div>
               <span className="text-slate-900">3. Notable Personnel Changes (&gt; $250K)</span>
               <p className="text-sm text-slate-600 mt-1 font-normal">
-                This should only include brokerage staff with an estimated impact of over $250,000. Please use their pipeline as a reference.
+                This should only include revenue producing staff with an estimated impact of over $250,000. Please use their pipeline as a reference.
               </p>
             </div>
           </div>
