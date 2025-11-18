@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Building2, ArrowRight } from "lucide-react";
@@ -126,6 +126,7 @@ export default function Dashboard() {
                   <SelectItem value="rmd">Regional Managing Director</SelectItem>
                   <SelectItem value="md">Managing Director</SelectItem>
                   <SelectItem value="president">Country President</SelectItem>
+                  <SelectItem value="business_line_leader">Business Line Leader</SelectItem>
                   <SelectItem value="admin">Corporate Finance</SelectItem>
                 </SelectContent>
               </Select>
