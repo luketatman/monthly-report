@@ -33,7 +33,8 @@ export default function RegionFilters({ filters, onFiltersChange, hideRegionSele
     { value: "Northeast", label: "Northeast" },
     { value: "Central", label: "Central" },
     { value: "South", label: "South" },
-    { value: "West", label: "West" }
+    { value: "West", label: "West" },
+    { value: "Corporate", label: "Corporate" }
   ];
 
   return (
