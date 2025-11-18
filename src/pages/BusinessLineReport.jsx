@@ -210,9 +210,15 @@ export default function BusinessLineReport() {
     setError(null);
     console.log("Updating business line submission with:", updates);
 
-    const updatedData = { ...submission, ...updates };
-    setSubmission(updatedData);
-    setSaving(false);
+    try {
+      const updatedData = await ServiceLineSubmission.update(submission.id, updates);
+      setSubmission(updatedData);
+    } catch (err) {
+      console.error("Error updating service line submission:", err);
+      setError("Failed to save changes. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleIssuesUpdate = (value) => {
