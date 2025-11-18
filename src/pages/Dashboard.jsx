@@ -28,12 +28,15 @@ export default function Dashboard() {
     // Store the verified PIN data
     setVerifiedPinData(pinData);
     sessionStorage.setItem('verifiedPinData', JSON.stringify(pinData));
-    
+
     // Navigate based on role - IMMEDIATELY, no state changes that cause re-renders
     if (selectedRole === 'admin') {
         navigate(createPageUrl("AdminPanel"));
       } else if (selectedRole === 'president') {
         navigate(createPageUrl("LeadershipDashboard"));
+      } else if (selectedRole === 'business_line_leader') {
+        // Business Line Leaders go directly to their form (similar to MD report)
+        navigate(createPageUrl("OfficeReport"));
       } else if (selectedRole === 'md' || selectedRole === 'rmd') {
         // MD and RMD need to choose between report and dashboard
         setCurrentView('action-selection');
