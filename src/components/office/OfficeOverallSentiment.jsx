@@ -56,7 +56,12 @@ export default function OfficeOverallSentiment({ submission, onUpdate, disabled 
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Smile className="text-indigo-600" />
-          <span className="text-slate-900">4. Overall Sentiment</span>
+          <div>
+            <span className="text-slate-900">4. Overall Sentiment</span>
+            <p className="text-sm text-slate-600 mt-1 font-normal">
+              Give us an update on overall how you feel your business is doing. Include any commentary on what is working, what isn't working, and where you think things are headed.
+            </p>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
