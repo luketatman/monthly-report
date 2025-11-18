@@ -1,13 +1,24 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { MonthlySubmission, OfficeSubmission, WinLoss, Pitch, PersonnelUpdate, FinancialData } from "@/entities/all";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
+  TrendingUp,
   Users,
   Target,
+  DollarSign,
+  Building2,
+  FileText,
   Award,
+  AlertTriangle,
+  CheckCircle,
+  Edit3,
+  XCircle,
   Home
 } from "lucide-react";
+import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
@@ -151,10 +162,18 @@ export default function LeadershipDashboard() {
     });
 
     // Filter function that only includes data from regions with submitted RMD reports
+    // OR if region is "Corporate", show all Global/business line data (no RMD report requirement)
     const filterFunc = (item) => {
       if (!item.month) return false;
-      const isRegionMatch = region === 'all' || item.region === region;
       const isMonthMatch = relevantMonths.includes(item.month);
+
+      // Special case: Corporate shows business line data (region === "Global")
+      if (region === 'Corporate') {
+        return isMonthMatch && item.region === 'Global';
+      }
+
+      // Regular case: filter by region and require submitted RMD reports
+      const isRegionMatch = region === 'all' || item.region === region;
       const hasSubmittedRMDReport = submittedRegionMonths.has(`${item.region}-${item.month}`);
 
       return isRegionMatch && isMonthMatch && hasSubmittedRMDReport;
