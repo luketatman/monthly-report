@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Send,
   FileText,
@@ -212,6 +213,10 @@ export default function BusinessLineReport() {
     const updatedData = { ...submission, ...updates };
     setSubmission(updatedData);
     setSaving(false);
+  };
+
+  const handleIssuesUpdate = (value) => {
+    updateSubmission({ persisting_issues: value });
   };
 
   const submitReport = async () => {
@@ -507,6 +512,21 @@ export default function BusinessLineReport() {
                 onUpdate={(sentiment) => updateSubmission({ overall_sentiment: sentiment })}
                 disabled={submission?.status === "submitted"}
               />
+
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-slate-900">5. Persisting Issues/Things I Need Help With</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={submission?.persisting_issues || ""}
+                    onChange={(e) => handleIssuesUpdate(e.target.value)}
+                    placeholder="Describe any ongoing issues or areas where you need assistance..."
+                    disabled={submission?.status === "submitted"}
+                    className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400 min-h-[150px]"
+                  />
+                </CardContent>
+              </Card>
             </div>
           )}
 

@@ -12,7 +12,7 @@ import { Pitch } from "@/entities/Pitch";
 
 const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt", "Equity"];
 const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Data Center", "Other"];
-const services = ["Brokerage", "Project Mgmt", "Workplace", "Valuation", "Capital Markets", "Other"];
+const services = ["Brokerage", "Project Mgmt", "Workplace", "Valuation", "Capital Markets", "Account Management", "Facilities Management", "Other"];
 const originationSources = ["Referral", "Broker Lead", "Marketing", "Cross-Sell", "Existing Client", "Other"];
 const stages = ["Meeting Scheduled", "Waiting to Hear Back", "Out for Signature", "Lost"];
 const engagementTypes = ["One-off", "Multi-serviced"];
