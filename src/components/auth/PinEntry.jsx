@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,8 +22,9 @@ export default function PinEntry({ onPinVerified, onBack, selectedRole }) {
     setError("");
 
     try {
-      // Convert selected role to uppercase to match the 'title' field in the entity
-      const results = await RegionPin.filter({ pin: pin, title: selectedRole.toUpperCase() });
+      // Convert selected role to uppercase and replace underscores with spaces to match the 'title' field in the entity
+      const titleToMatch = selectedRole.toUpperCase().replace(/_/g, ' ');
+      const results = await RegionPin.filter({ pin: pin, title: titleToMatch });
 
       if (results.length > 0) {
         const matchedPinData = results[0];
