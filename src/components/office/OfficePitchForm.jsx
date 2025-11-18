@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -172,7 +171,7 @@ export default function OfficePitchForm({
           <div className="flex items-center gap-3">
             <Target className="text-orange-600" />
             <div>
-              <span className="text-slate-900">4. Notable Pitches (&gt; $100K)</span>
+              <span className="text-slate-900">2. Notable Pitches (&gt; $100K)</span>
               <p className="text-sm text-slate-600 mt-1 font-normal">
                 Pitches include any and all new pitches that occurred this month, as well as updates on previously submitted pitches. If a pitch was won and has been paid on, please include it in the Wins and Losses section.
               </p>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -163,7 +162,7 @@ export default function OfficePersonnelForm({
           <div className="flex items-center gap-3">
             <Users className="text-teal-600" />
             <div>
-              <span className="text-slate-900">5. Notable Personnel Changes (&gt; $250K)</span>
+              <span className="text-slate-900">3. Notable Personnel Changes (&gt; $250K)</span>
               <p className="text-sm text-slate-600 mt-1 font-normal">
                 This should only include brokerage staff with an estimated impact of over $250,000. Please use their pipeline as a reference.
               </p>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -182,7 +181,7 @@ export default function OfficeWinLossForm({
           <div className="flex items-center gap-3">
             <Award className="text-purple-600" />
             <div>
-              <span className="text-slate-900">3. Notable Wins / Losses for {currentMonthName} (&gt; $250K)</span>
+              <span className="text-slate-900">1. Notable Wins / Losses for {currentMonthName} (&gt; $250K)</span>
               <p className="text-sm text-slate-600 mt-1 font-normal">
                 <strong>Wins</strong> refer to any new business Avison Young has secured that we've been paid on or to be paid on, generating over $250,000 in fees.<br />
                 <strong>Losses</strong> refer to existing business that Avison Young previously held but no longer retains. For example, losing an agency assignment after a building sale where the new owner awarded it to CBRE.
