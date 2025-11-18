@@ -50,7 +50,7 @@ export default function PinEntry({ onPinVerified, onBack, selectedRole }) {
             <Lock className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold text-slate-900">
-            {selectedRole === 'rmd' ? 'Regional' : 'Office'} Access Verification
+            {selectedRole === 'rmd' ? 'Regional' : selectedRole === 'business_line_leader' ? 'Service Line Leader' : 'Office'} Access Verification
           </CardTitle>
           <p className="text-slate-600 mt-2">
             Please enter your 4-digit PIN to continue, and if you do not have your code please contact Luke.tatman@avisonyoung.com
