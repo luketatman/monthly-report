@@ -251,10 +251,10 @@ export default function OfficeWinLossForm({
             {/* Second Row - Revenue Fields */}
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium text-slate-50 mb-2 block">Budget Year Revenue Impact</Label>
+                <Label className="text-sm font-medium text-slate-50 mb-2 block">Estimated Current Year Revenue Impact</Label>
                 <Input
                   type="number"
-                  placeholder="Budget Year Revenue Impact"
+                  placeholder="Estimated Current Year Revenue Impact"
                   value={entry.budget_year_revenue_impact || ''}
                   onChange={(e) => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)}
                   disabled={!isSubmissionPeriod || saving}
@@ -263,10 +263,10 @@ export default function OfficeWinLossForm({
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-slate-50 mb-2 block">Total Revenue Impact</Label>
+                <Label className="text-sm font-medium text-slate-50 mb-2 block">Estimated Total Revenue Impact</Label>
                 <Input
                   type="number"
-                  placeholder="Total Revenue Impact"
+                  placeholder="Estimated Total Revenue Impact"
                   value={entry.total_revenue_impact || ''}
                   onChange={(e) => handleUpdate(index, 'total_revenue_impact', e.target.value)}
                   disabled={!isSubmissionPeriod || saving}

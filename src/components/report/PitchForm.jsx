@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -268,12 +267,12 @@ export default function PitchForm({ submission, disabled, markets }) {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Budget Year Revenue Impact</Label>
-                <Input type="number" placeholder="Budget Year Revenue Impact" value={entry.budget_year_revenue_impact || ''} onChange={e => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
+                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Current Year Revenue Impact</Label>
+                <Input type="number" placeholder="Estimated Current Year Revenue Impact" value={entry.budget_year_revenue_impact || ''} onChange={e => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Total Revenue Impact</Label>
-                <Input type="number" placeholder="Total Revenue Impact" value={entry.total_revenue_impact || ''} onChange={e => handleUpdate(index, 'total_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
+                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Total Revenue Impact</Label>
+                <Input type="number" placeholder="Estimated Total Revenue Impact" value={entry.total_revenue_impact || ''} onChange={e => handleUpdate(index, 'total_revenue_impact', e.target.value)} disabled={disabled} onBlur={() => handleSave(index)} className="bg-slate-800 text-slate-50" />
               </div>
             </div>
 
