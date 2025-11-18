@@ -230,9 +230,30 @@ export default function BusinessLineReport() {
     }
   };
 
+  const [persistingIssues, setPersistingIssues] = React.useState("");
+
+  React.useEffect(() => {
+    setPersistingIssues(submission?.persisting_issues || "");
+  }, [submission?.id]);
+
+  const debouncedIssuesSave = React.useRef(
+    debounce((value) => {
+      updateSubmission({ persisting_issues: value });
+    }, 1000)
+  ).current;
+
   const handleIssuesUpdate = (value) => {
-    updateSubmission({ persisting_issues: value });
+    setPersistingIssues(value);
+    debouncedIssuesSave(value);
   };
+
+  function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
 
   const submitReport = async () => {
     if (!isSubmittable()) {
@@ -541,7 +562,7 @@ export default function BusinessLineReport() {
                 </CardHeader>
                 <CardContent>
                   <Textarea
-                  value={submission?.persisting_issues || ""}
+                  value={persistingIssues}
                   onChange={(e) => handleIssuesUpdate(e.target.value)}
                   placeholder="Describe any ongoing issues or areas where you need assistance..."
                   disabled={submission?.status === "submitted"}
