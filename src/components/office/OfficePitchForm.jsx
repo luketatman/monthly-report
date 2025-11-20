@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Target, PlusCircle, Trash2 } from "lucide-react";
 import { Pitch } from "@/entities/Pitch";
 
-const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt", "Equity"];
+const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt & Equity", "Property Management"];
 const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Data Center", "Other"];
 const services = ["Brokerage", "Project Mgmt", "Workplace", "Valuation", "Capital Markets", "Account Management", "Facilities Management", "Other"];
 const originationSources = ["Referral", "Broker Lead", "Marketing", "Cross-Sell", "Existing Client", "Other"];

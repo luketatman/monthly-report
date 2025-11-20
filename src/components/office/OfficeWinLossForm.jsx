@@ -11,7 +11,7 @@ import { Award, PlusCircle, Trash2 } from "lucide-react";
 import { WinLoss } from "@/entities/WinLoss";
 
 const outcomes = ["Win", "Loss"];
-const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt", "Equity"];
+const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt & Equity", "Property Management"];
 const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Data Center", "Other"];
 const services = ["Valuation", "Project Management", "Lease Administration", "Facility Management", "Account Management", "Facilities Management"];
 

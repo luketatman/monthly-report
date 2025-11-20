@@ -11,7 +11,7 @@ import { Target, PlusCircle, Trash2, ChevronDown, ChevronUp } from "lucide-react
 import { Pitch } from "@/entities/Pitch";
 
 const stages = ["Meeting Scheduled", "Waiting to Hear Back", "Out for Signature", "Lost"];
-const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services"];
+const transactionTypes = ["Tenant Rep", "Buyer Rep", "Seller Rep", "Agency Leasing", "Corporate Services", "Debt & Equity", "Property Management"];
 const assetTypes = ["Industrial", "Office", "Multifamily", "Land", "IOS", "Retail", "Hospitality", "Healthcare", "Other"];
 const services = ["Valuation", "Project Management", "Lease Administration", "Facility Management"];
 const originationSources = ["Referral", "Broker Lead", "Marketing", "Cross-Sell", "Existing Client", "Other"];
