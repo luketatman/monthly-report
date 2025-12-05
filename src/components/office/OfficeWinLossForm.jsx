@@ -67,7 +67,7 @@ export default function OfficeWinLossForm({
         submissionIdRef.current = submission?.id;
       }
     }
-  }, [winLosses, submission?.id]);
+  }, [submission?.id]); // Only depend on submission ID, not winLosses prop
 
   const handleUpdate = (index, field, value) => {
     const newEntries = [...entries];

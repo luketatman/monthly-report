@@ -59,7 +59,7 @@ export default function OfficePitchForm({
         submissionIdRef.current = submission?.id;
       }
     }
-  }, [pitches, submission?.id]);
+  }, [submission?.id]); // Only depend on submission ID, not pitches prop
 
   const handleUpdate = (index, field, value) => {
     const newEntries = [...entries];
