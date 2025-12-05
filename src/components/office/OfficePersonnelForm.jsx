@@ -50,7 +50,7 @@ export default function OfficePersonnelForm({
         submissionIdRef.current = submission?.id;
       }
     }
-  }, [personnelUpdates, submission?.id]);
+  }, [submission?.id]); // Only depend on submission ID, not personnelUpdates prop
 
   const handleUpdate = (index, field, value) => {
     const newEntries = [...entries];
