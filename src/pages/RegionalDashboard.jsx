@@ -130,9 +130,9 @@ export default function RegionalDashboard({ userRegion }) {
 
       const marketMatch = (itemMarket) => {
         if (!itemMarket) return false;
-        // Normalize both values for comparison
-        const normalizedItem = itemMarket.trim().toLowerCase();
-        const normalizedRegion = userRegion.trim().toLowerCase();
+        // Normalize both values for comparison - remove spaces and lowercase
+        const normalizedItem = itemMarket.replace(/\s+/g, '').toLowerCase();
+        const normalizedRegion = userRegion.replace(/\s+/g, '').toLowerCase();
         return normalizedItem === normalizedRegion;
       };
 
