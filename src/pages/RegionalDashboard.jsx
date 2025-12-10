@@ -1,14 +1,24 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { MonthlySubmission, OfficeSubmission, WinLoss, Pitch, PersonnelUpdate, FinancialData } from "@/entities/all";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
+  TrendingUp,
   Users,
   Target,
+  DollarSign,
   Building2,
+  FileText,
   Award,
+  AlertTriangle,
+  CheckCircle,
+  Edit3,
+  XCircle,
   ArrowLeft
 } from "lucide-react";
+import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
@@ -120,7 +130,10 @@ export default function RegionalDashboard({ userRegion }) {
 
       const marketMatch = (itemMarket) => {
         if (!itemMarket) return false;
-        return itemMarket.toLowerCase() === userRegion.toLowerCase();
+        // Normalize both values for comparison
+        const normalizedItem = itemMarket.trim().toLowerCase();
+        const normalizedRegion = userRegion.trim().toLowerCase();
+        return normalizedItem === normalizedRegion;
       };
 
       const allData = {
