@@ -414,7 +414,31 @@ export default function RegionalDashboard({ userRegion }) {
               <SentimentHeatmap
                 submissions={sentimentSubmissions}
                 previousPeriodSubmissions={previousPeriodSentimentSubmissions}
-                loading={loading} />
+                rmdSubmissions={filteredData.submissions}
+                previousRmdSubmissions={allSubmissions.filter((s) => {
+                  const { periodType, year, month, quarter } = filters;
+                  let previousPeriodMonths = [];
+                  if (periodType === 'monthly') {
+                    const prevMonth = month === 1 ? 12 : month - 1;
+                    const prevYear = month === 1 ? year - 1 : year;
+                    previousPeriodMonths.push(`${prevYear}-${String(prevMonth).padStart(2, '0')}`);
+                  } else if (periodType === 'quarterly') {
+                    const prevQuarter = quarter === 1 ? 4 : quarter - 1;
+                    const prevYear = quarter === 1 ? year - 1 : year;
+                    const startMonth = (prevQuarter - 1) * 3 + 1;
+                    for (let i = 0; i < 3; i++) {
+                      previousPeriodMonths.push(`${prevYear}-${String(startMonth + i).padStart(2, '0')}`);
+                    }
+                  } else if (periodType === 'yearly') {
+                    const prevYear = year - 1;
+                    for (let i = 1; i <= 12; i++) {
+                      previousPeriodMonths.push(`${prevYear}-${String(i).padStart(2, '0')}`);
+                    }
+                  }
+                  return s.month && previousPeriodMonths.includes(s.month) && s.status === 'submitted';
+                })}
+                loading={loading}
+                isRmdView={!isMarketView} />
 
             </div>
           </div>
