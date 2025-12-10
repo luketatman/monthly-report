@@ -1,23 +1,31 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Thermometer, TrendingUp, TrendingDown, Minus, MessageSquare } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle } from
+  DialogTitle,
+  DialogTrigger } from
 "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function SentimentHeatmap({ submissions, previousPeriodSubmissions, loading }) {
+export default function SentimentHeatmap({ submissions, previousPeriodSubmissions, loading, rmdSubmissions, previousRmdSubmissions, isRmdView }) {
   const [selectedAssetClass, setSelectedAssetClass] = useState(null);
+  const [showRmdCommentary, setShowRmdCommentary] = useState(false);
 
   const assetClasses = [
   'office', 'retail', 'healthcare', 'industrial',
   'multifamily', 'capital_markets', 'other'];
+
+  // Determine which data source to use based on toggle
+  const activeSubmissions = showRmdCommentary && isRmdView ? rmdSubmissions : submissions;
+  const activePreviousSubmissions = showRmdCommentary && isRmdView ? previousRmdSubmissions : previousPeriodSubmissions;
 
   // Helper function to calculate average sentiment for a given set of submissions
   const calculateAverageSentiment = (submissionData, assetClass) => {
@@ -41,8 +49,8 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
   };
 
   const sentimentData = assetClasses.map((ac) => {
-    const currentPeriod = calculateAverageSentiment(submissions, ac);
-    const previousPeriod = calculateAverageSentiment(previousPeriodSubmissions, ac);
+    const currentPeriod = calculateAverageSentiment(activeSubmissions, ac);
+    const previousPeriod = calculateAverageSentiment(activePreviousSubmissions, ac);
 
     // Calculate period-over-period trend
     let trend = 0;
@@ -91,7 +99,7 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
     const previousPeriodScoresByMonth = {};
 
     // Collect current period scores by month across all asset classes
-    submissions.forEach((s) => {
+    activeSubmissions.forEach((s) => {
       if (s.asset_class_sentiment) {
         const monthScores = [];
         assetClasses.forEach((ac) => {
@@ -112,7 +120,7 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
     });
 
     // Collect previous period scores by month across all asset classes
-    (previousPeriodSubmissions || []).forEach((s) => {
+    (activePreviousSubmissions || []).forEach((s) => {
       if (s.asset_class_sentiment) {
         const monthScores = [];
         assetClasses.forEach((ac) => {
@@ -158,7 +166,7 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
 
     // Compile commentary from all asset classes for current period
     const allCommentary = [];
-    submissions.forEach((s) => {
+    activeSubmissions.forEach((s) => {
       if (s.asset_class_sentiment) {
         assetClasses.forEach((ac) => {
           const score = s.asset_class_sentiment[ac]?.score;
@@ -193,7 +201,7 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
       trend,
       trendIcon,
       commentary: allCommentary,
-      submissions: submissions // Still refers to current submissions
+      submissions: activeSubmissions // Use active submissions
     };
   })();
 
@@ -285,10 +293,24 @@ export default function SentimentHeatmap({ submissions, previousPeriodSubmission
     <>
       <Card className="shadow-lg bg-slate-600">
         <CardHeader>
-          <CardTitle className="text-white font-semibold leading-none tracking-tight flex items-center gap-2">
-            <Thermometer className="w-5 h-5" />
-            Asset Class Sentiment
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white font-semibold leading-none tracking-tight flex items-center gap-2">
+              <Thermometer className="w-5 h-5" />
+              Asset Class Sentiment
+            </CardTitle>
+            {isRmdView && (
+              <div className="flex items-center gap-2">
+                <Label htmlFor="commentary-toggle" className="text-white text-sm">
+                  {showRmdCommentary ? "RMD Commentary" : "MD Commentary"}
+                </Label>
+                <Switch
+                  id="commentary-toggle"
+                  checked={showRmdCommentary}
+                  onCheckedChange={setShowRmdCommentary}
+                />
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           {loading ?
