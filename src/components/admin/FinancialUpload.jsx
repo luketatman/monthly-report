@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { FinancialData, Region } from "@/entities/all";
-import { ExtractDataFromUploadedFile, UploadFile } from "@/integrations/Core";
+import React, { useState } from "react";
+import { base44 } from "@/api/base44Client";
+import { UploadFile } from "@/integrations/Core";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,6 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Schema for bulk financial upload - region and office (market) are now included in the file
 const financialDataSchema = {
     type: "array",
     items: {
@@ -42,24 +41,18 @@ export default function FinancialUpload({ onDataUploaded }) {
   const [alert, setAlert] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState("");
 
-  // Generate month options (current month and 11 months back)
-  const monthOptions = React.useMemo(() => {
-    const options = [];
-    const today = new Date();
-    for (let i = 0; i < 12; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      const label = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-      options.push({ value, label });
-    }
-    return options;
-  }, []);
+  const currentYear = new Date().getFullYear();
+  const months = Array.from({ length: 12 }, (_, i) => {
+    const monthNum = i + 1;
+    const monthStr = new Date(0, i).toLocaleString('default', { month: 'long' });
+    return { value: `${currentYear}-${String(monthNum).padStart(2, '0')}`, label: `${monthStr} ${currentYear}` };
+  });
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setAlert(null);
-    setDataToUpload([]); // Clear previous preview data
+    setDataToUpload([]);
 
     if (!selectedFile) {
       return;
@@ -70,7 +63,7 @@ export default function FinancialUpload({ onDataUploaded }) {
     try {
       const { file_url } = await UploadFile({ file: selectedFile });
 
-      const extractResult = await ExtractDataFromUploadedFile({
+      const extractResult = await base44.integrations.Core.ExtractDataFromUploadedFile({
         file_url,
         json_schema: financialDataSchema
       });
@@ -89,7 +82,7 @@ export default function FinancialUpload({ onDataUploaded }) {
       console.error('File processing error:', error);
       setAlert({ type: 'error', message: `File processing failed: ${error.message}` });
       setDataToUpload([]);
-      setFile(null); // Clear the file input on error
+      setFile(null);
       if (document.getElementById('financial-file')) {
         document.getElementById('financial-file').value = '';
       }
@@ -110,21 +103,10 @@ export default function FinancialUpload({ onDataUploaded }) {
       let createdCount = 0;
       let updatedCount = 0;
 
-      // Process each row from the file
       for (const item of dataToUpload) {
-        const market = item.office; // "Office" column in the CSV maps to market in our schema
-        const region = item.region;
-
-        // Check if a record already exists for this region/market/month
-        const existingRecords = await FinancialData.filter({ 
-          region, 
-          market, 
-          month: selectedMonth 
-        });
-
         const recordData = {
-          region,
-          market,
+          region: item.region,
+          market: item.office,
           month: selectedMonth,
           monthly_revenue: parseFloat(item.monthly_revenue) || 0,
           monthly_budget: parseFloat(item.monthly_budget) || 0,
@@ -133,21 +115,25 @@ export default function FinancialUpload({ onDataUploaded }) {
           ytd_budget: parseFloat(item.ytd_budget) || 0,
         };
 
-        if (existingRecords.length > 0) {
+        // Check if record already exists
+        const existing = await base44.entities.FinancialData.filter({
+          region: item.region,
+          market: item.office,
+          month: selectedMonth
+        });
+
+        if (existing && existing.length > 0) {
           // Update existing record
-          await FinancialData.update(existingRecords[0].id, recordData);
+          await base44.entities.FinancialData.update(existing[0].id, recordData);
           updatedCount++;
         } else {
           // Create new record
-          await FinancialData.create(recordData);
+          await base44.entities.FinancialData.create(recordData);
           createdCount++;
         }
       }
 
-      setAlert({ 
-        type: 'success', 
-        message: `Successfully processed ${dataToUpload.length} records for ${selectedMonth} (${createdCount} created, ${updatedCount} updated)!` 
-      });
+      setAlert({ type: 'success', message: `Upload complete! Created ${createdCount} new records, updated ${updatedCount} existing records.` });
       setDataToUpload([]);
       setFile(null);
       document.getElementById('financial-file').value = '';
@@ -187,12 +173,12 @@ export default function FinancialUpload({ onDataUploaded }) {
             <Label htmlFor="month-select" className="text-white">1. Select Month</Label>
             <Select value={selectedMonth} onValueChange={setSelectedMonth} disabled={processing || uploading}>
               <SelectTrigger id="month-select" className="w-full bg-slate-600 text-white border-slate-500">
-                <SelectValue placeholder="Select a month for the financial data..." />
+                <SelectValue placeholder="Select month to upload data for..." />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 text-white border-slate-600">
-                {monthOptions.map(option => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                {months.map(month => (
+                  <SelectItem key={month.value} value={month.value}>
+                    {month.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -210,7 +196,7 @@ export default function FinancialUpload({ onDataUploaded }) {
               className="bg-slate-600 border-slate-500 text-white file:text-white disabled:opacity-50"
             />
             <p className="text-xs text-slate-400">
-              Required columns: Region, Office, Monthly_revenue, Monthly_budget, monthly_reforecast, Ytd_revenue, Ytd_budget
+              Required columns: `Region`, `Office`, `Monthly_revenue`, `Monthly_budget`, `monthly_reforecast`, `Ytd_revenue`, `Ytd_budget`
             </p>
           </div>
         </div>
@@ -231,7 +217,7 @@ export default function FinancialUpload({ onDataUploaded }) {
 
         {dataToUpload.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold text-white mb-2">Preview for {monthOptions.find(m => m.value === selectedMonth)?.label || selectedMonth}</h3>
+            <h3 className="text-lg font-semibold text-white mb-2">Preview - {dataToUpload.length} Records for {selectedMonth}</h3>
             <div className="max-h-96 overflow-y-auto border border-slate-600 rounded-md">
               <Table>
                 <TableHeader className="sticky top-0 bg-slate-800">
@@ -250,11 +236,11 @@ export default function FinancialUpload({ onDataUploaded }) {
                     <TableRow key={index} className="text-slate-300 border-slate-600">
                       <TableCell>{row.region}</TableCell>
                       <TableCell>{row.office}</TableCell>
-                      <TableCell>{row.monthly_revenue}</TableCell>
-                      <TableCell>{row.monthly_budget}</TableCell>
-                      <TableCell>{row.monthly_reforecast}</TableCell>
-                      <TableCell>{row.ytd_revenue}</TableCell>
-                      <TableCell>{row.ytd_budget}</TableCell>
+                      <TableCell>${row.monthly_revenue?.toLocaleString()}</TableCell>
+                      <TableCell>${row.monthly_budget?.toLocaleString()}</TableCell>
+                      <TableCell>${row.monthly_reforecast?.toLocaleString()}</TableCell>
+                      <TableCell>${row.ytd_revenue?.toLocaleString()}</TableCell>
+                      <TableCell>${row.ytd_budget?.toLocaleString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
