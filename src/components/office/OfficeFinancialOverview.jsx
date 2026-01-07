@@ -116,28 +116,30 @@ export default function OfficeFinancialOverview({ market, region, month, financi
           <h3 className="font-bold text-lg text-slate-800 mb-4">{market}</h3>
           
           <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div className="bg-white p-3 rounded-md border">
-              <label className="text-sm text-slate-700 block mb-1 font-medium">Monthly Revenue</label>
-              <Input
-                type="number"
-                value={formatCurrency(localFinancialData.monthly_revenue)}
-                onChange={(e) => handleLocalChange('monthly_revenue', e.target.value)}
-                disabled={disabled}
-                className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
-                placeholder="0"
-              />
-            </div>
-            <div className="bg-white p-3 rounded-md border">
-              <label className="text-sm text-slate-700 block mb-1 font-medium">Monthly Budget</label>
-              <Input
-                type="number"
-                value={formatCurrency(localFinancialData.monthly_budget)}
-                onChange={(e) => handleLocalChange('monthly_budget', e.target.value)}
-                disabled={disabled}
-                className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
-                placeholder="0"
-              />
-            </div>
+          <div className="bg-white p-3 rounded-md border">
+            <label className="text-sm text-slate-700 block mb-1 font-medium">Monthly Revenue</label>
+            <Input
+              type="number"
+              value={formatCurrency(localFinancialData.monthly_revenue)}
+              onChange={(e) => handleLocalChange('monthly_revenue', e.target.value)}
+              onBlur={(e) => debouncedSaveFinancials.flush && debouncedSaveFinancials.flush()}
+              disabled={disabled}
+              className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
+              placeholder="0"
+            />
+          </div>
+          <div className="bg-white p-3 rounded-md border">
+            <label className="text-sm text-slate-700 block mb-1 font-medium">Monthly Budget</label>
+            <Input
+              type="number"
+              value={formatCurrency(localFinancialData.monthly_budget)}
+              onChange={(e) => handleLocalChange('monthly_budget', e.target.value)}
+              onBlur={(e) => debouncedSaveFinancials.flush && debouncedSaveFinancials.flush()}
+              disabled={disabled}
+              className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
+              placeholder="0"
+            />
+          </div>
           </div>
           
           <Alert className="bg-blue-50 border-blue-200 text-blue-800 mb-4">

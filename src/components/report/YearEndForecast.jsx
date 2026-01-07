@@ -123,6 +123,7 @@ export default function YearEndForecast({ markets, financialData, submission, on
                     type="number"
                     value={formatCurrency(marketData.ytd_revenue)}
                     onChange={(e) => handleFieldChange(market, 'ytd_revenue', e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-semibold text-lg bg-blue-50 border-blue-300 text-slate-900"
                     placeholder="0"
@@ -134,6 +135,7 @@ export default function YearEndForecast({ markets, financialData, submission, on
                     type="number"
                     value={formatCurrency(marketData.ytd_budget)}
                     onChange={(e) => handleFieldChange(market, 'ytd_budget', e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-semibold text-lg bg-blue-50 border-blue-300 text-slate-900"
                     placeholder="0"
@@ -149,6 +151,7 @@ export default function YearEndForecast({ markets, financialData, submission, on
                     step="0.1"
                     value={formatCurrency(marketData.year_end_forecast)}
                     onChange={(e) => handleFieldChange(market, 'year_end_forecast', e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-bold text-2xl text-green-600 bg-green-50 border-green-300"
                     placeholder="0.0"

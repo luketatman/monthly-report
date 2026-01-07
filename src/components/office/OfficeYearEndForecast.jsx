@@ -101,6 +101,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 type="number"
                 value={formatCurrency(localData.ytd_revenue)}
                 onChange={(e) => handleLocalChange('ytd_revenue', e.target.value)}
+                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-lg font-semibold border-slate-300 placeholder-slate-400"
                 placeholder="0"
@@ -112,6 +113,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 type="number"
                 value={formatCurrency(localData.ytd_budget)}
                 onChange={(e) => handleLocalChange('ytd_budget', e.target.value)}
+                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-lg font-semibold border-slate-300 placeholder-slate-400"
                 placeholder="0"
@@ -135,6 +137,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 step="0.1"
                 value={formatCurrency(localData.year_end_forecast)}
                 onChange={(e) => handleLocalChange('year_end_forecast', e.target.value)}
+                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-2xl font-bold border-slate-300 placeholder-slate-400"
                 placeholder="0.0"

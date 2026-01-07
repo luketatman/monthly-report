@@ -166,6 +166,7 @@ export default function FinancialOverview({ markets, financialData, submission, 
                     value={formatCurrency(marketData.monthly_revenue)}
                     onChange={(e) => handleLocalFinancialChange(market, 'monthly_revenue', e.target.value)}
                     onBlur={() => handleSaveFinancials(market, 'monthly_revenue')}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-semibold text-lg bg-slate-50 border-slate-300 text-slate-900"
                     placeholder="0"
@@ -178,6 +179,7 @@ export default function FinancialOverview({ markets, financialData, submission, 
                     value={formatCurrency(marketData.monthly_budget)}
                     onChange={(e) => handleLocalFinancialChange(market, 'monthly_budget', e.target.value)}
                     onBlur={() => handleSaveFinancials(market, 'monthly_budget')}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-semibold text-lg bg-slate-50 border-slate-300 text-slate-900"
                     placeholder="0"
