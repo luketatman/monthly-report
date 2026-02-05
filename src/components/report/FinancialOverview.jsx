@@ -186,7 +186,7 @@ export default function FinancialOverview({ markets, financialData, submission, 
                   />
                 </div>
                 <div className="bg-white p-3 rounded-md border">
-                  <label className="text-sm text-slate-500 block mb-1">90 Day Monthly Reforecast</label>
+                  <label className="text-sm text-slate-500 block mb-1">Monthly Forecast (90-Day)</label>
                   <Input
                     type="number"
                     value={formatCurrency(marketData.monthly_reforecast)}

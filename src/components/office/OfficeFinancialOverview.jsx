@@ -166,7 +166,7 @@ export default function OfficeFinancialOverview({ market, region, month, financi
               />
             </div>
             <div className="bg-white p-3 rounded-md border">
-              <label className="text-sm text-slate-700 block mb-1 font-medium">90 Day Monthly Reforecast</label>
+              <label className="text-sm text-slate-700 block mb-1 font-medium">Monthly Forecast (90-Day)</label>
               <Input
                 type="number"
                 value={formatCurrency(localFinancialData.monthly_reforecast)}
