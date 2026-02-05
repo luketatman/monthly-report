@@ -158,7 +158,7 @@ export default function FinancialOverview({ markets, financialData, submission, 
             <div key={market} className="p-4 border rounded-lg bg-slate-100">
               <h3 className="font-bold text-lg text-slate-800 mb-4">{market}</h3>
               
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
                 <div className="bg-white p-3 rounded-md border">
                   <label className="text-sm text-slate-500 block mb-1">Monthly Revenue</label>
                   <Input
@@ -179,6 +179,19 @@ export default function FinancialOverview({ markets, financialData, submission, 
                     value={formatCurrency(marketData.monthly_budget)}
                     onChange={(e) => handleLocalFinancialChange(market, 'monthly_budget', e.target.value)}
                     onBlur={() => handleSaveFinancials(market, 'monthly_budget')}
+                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+                    disabled={disabled}
+                    className="font-semibold text-lg bg-slate-50 border-slate-300 text-slate-900"
+                    placeholder="0"
+                  />
+                </div>
+                <div className="bg-white p-3 rounded-md border">
+                  <label className="text-sm text-slate-500 block mb-1">90 Day Monthly Reforecast</label>
+                  <Input
+                    type="number"
+                    value={formatCurrency(marketData.monthly_reforecast)}
+                    onChange={(e) => handleLocalFinancialChange(market, 'monthly_reforecast', e.target.value)}
+                    onBlur={() => handleSaveFinancials(market, 'monthly_reforecast')}
                     onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
                     disabled={disabled}
                     className="font-semibold text-lg bg-slate-50 border-slate-300 text-slate-900"
