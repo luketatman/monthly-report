@@ -93,6 +93,31 @@ export default function OfficeFinancialOverview({ market, region, month, financi
     setLocalFinancialData(prev => ({ ...prev, [field]: value }));
     debouncedSaveFinancials(field, value, localFinancialData, submission);
   };
+
+  const handleBlur = async (field) => {
+    const value = localFinancialData[field];
+    const numericValue = parseFloat(value) || 0;
+    try {
+      if (localFinancialData?.id) {
+        await FinancialData.update(localFinancialData.id, { [field]: numericValue });
+      } else {
+        const created = await FinancialData.create({
+          region: submission?.region || region,
+          market: market,
+          month: submission?.month || month,
+          monthly_revenue: 0,
+          monthly_budget: 0,
+          ytd_revenue: 0,
+          ytd_budget: 0,
+          [field]: numericValue
+        });
+        setLocalFinancialData(created);
+      }
+      if (onFinancialDataUpdateRef.current) onFinancialDataUpdateRef.current();
+    } catch (error) {
+      console.error("Failed to save on blur:", error);
+    }
+  };
   
   const formatCurrency = (value) => {
     // CRITICAL FIX: Display 0 instead of empty string for better UX
@@ -122,7 +147,7 @@ export default function OfficeFinancialOverview({ market, region, month, financi
               type="number"
               value={formatCurrency(localFinancialData.monthly_revenue)}
               onChange={(e) => handleLocalChange('monthly_revenue', e.target.value)}
-              onBlur={(e) => debouncedSaveFinancials.flush && debouncedSaveFinancials.flush()}
+              onBlur={() => handleBlur('monthly_revenue')}
               disabled={disabled}
               className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
               placeholder="0"
@@ -134,7 +159,7 @@ export default function OfficeFinancialOverview({ market, region, month, financi
               type="number"
               value={formatCurrency(localFinancialData.monthly_budget)}
               onChange={(e) => handleLocalChange('monthly_budget', e.target.value)}
-              onBlur={(e) => debouncedSaveFinancials.flush && debouncedSaveFinancials.flush()}
+              onBlur={() => handleBlur('monthly_budget')}
               disabled={disabled}
               className="font-semibold text-lg bg-slate-800 border-slate-300 text-slate-50 placeholder-slate-400"
               placeholder="0"

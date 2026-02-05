@@ -72,6 +72,34 @@ export default function OfficeYearEndForecast({ market, region, month, financial
     setLocalData(prev => ({ ...prev, [field]: value }));
     debouncedSave(field, value, localData);
   };
+
+  const handleBlur = async (field) => {
+    const value = localData[field];
+    let processedValue = value;
+    if (['year_end_forecast', 'ytd_revenue', 'ytd_budget'].includes(field)) {
+      processedValue = parseFloat(value) || 0;
+    }
+    try {
+      if (localData.id) {
+        await FinancialData.update(localData.id, { [field]: processedValue });
+      } else {
+        const created = await FinancialData.create({
+          region: region,
+          market: market,
+          month: month,
+          monthly_revenue: 0,
+          monthly_budget: 0,
+          ytd_revenue: 0,
+          ytd_budget: 0,
+          [field]: processedValue
+        });
+        setLocalData(created);
+      }
+      if (onForecastUpdateRef.current) onForecastUpdateRef.current();
+    } catch (error) {
+      console.error("Failed to save on blur:", error);
+    }
+  };
   
   const formatCurrency = (value) => {
     // CRITICAL FIX: Display 0 instead of empty string for better UX
@@ -101,7 +129,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 type="number"
                 value={formatCurrency(localData.ytd_revenue)}
                 onChange={(e) => handleLocalChange('ytd_revenue', e.target.value)}
-                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
+                onBlur={() => handleBlur('ytd_revenue')}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-lg font-semibold border-slate-300 placeholder-slate-400"
                 placeholder="0"
@@ -113,7 +141,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 type="number"
                 value={formatCurrency(localData.ytd_budget)}
                 onChange={(e) => handleLocalChange('ytd_budget', e.target.value)}
-                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
+                onBlur={() => handleBlur('ytd_budget')}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-lg font-semibold border-slate-300 placeholder-slate-400"
                 placeholder="0"
@@ -137,7 +165,7 @@ export default function OfficeYearEndForecast({ market, region, month, financial
                 step="0.1"
                 value={formatCurrency(localData.year_end_forecast)}
                 onChange={(e) => handleLocalChange('year_end_forecast', e.target.value)}
-                onBlur={(e) => debouncedSave.flush && debouncedSave.flush()}
+                onBlur={() => handleBlur('year_end_forecast')}
                 disabled={disabled}
                 className="bg-slate-800 text-slate-50 px-3 py-2 text-2xl font-bold border-slate-300 placeholder-slate-400"
                 placeholder="0.0"
