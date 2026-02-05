@@ -145,20 +145,6 @@ export default function YearEndForecast({ markets, financialData, submission, on
               
               <div className="space-y-4">
                 <div className="bg-white p-4 rounded-md border">
-                  <label className="text-sm font-medium text-slate-700 mb-2 block">Year-End Forecast (in millions)</label>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={formatCurrency(marketData.year_end_forecast)}
-                    onChange={(e) => handleFieldChange(market, 'year_end_forecast', e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
-                    disabled={disabled}
-                    className="font-bold text-2xl text-green-600 bg-green-50 border-green-300"
-                    placeholder="0.0"
-                  />
-                </div>
-
-                <div className="bg-white p-4 rounded-md border">
                   <label className="text-sm font-medium text-slate-700 mb-2 block flex items-center gap-2">
                     <TrendingUp className="w-4 h-4" />
                     Year End Outlook
