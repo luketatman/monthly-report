@@ -41,8 +41,9 @@ export default function OfficeFinancialOverview({ market, region, month, financi
             region: subData?.region || region,
             market: market,
             month: subData?.month || month,
-            monthly_revenue: 0, // Default to 0 instead of null
-            monthly_budget: 0, // Default to 0 instead of null
+            monthly_revenue: 0,
+            monthly_budget: 0,
+            monthly_reforecast: 0,
             ytd_revenue: 0,
             ytd_budget: 0,
             commentary: value
@@ -76,6 +77,7 @@ export default function OfficeFinancialOverview({ market, region, month, financi
             month: subData?.month || month,
             monthly_revenue: 0,
             monthly_budget: 0,
+            monthly_reforecast: 0,
             ytd_revenue: 0,
             ytd_budget: 0,
             [field]: numericValue
@@ -107,6 +109,7 @@ export default function OfficeFinancialOverview({ market, region, month, financi
           month: submission?.month || month,
           monthly_revenue: 0,
           monthly_budget: 0,
+          monthly_reforecast: 0,
           ytd_revenue: 0,
           ytd_budget: 0,
           [field]: numericValue
