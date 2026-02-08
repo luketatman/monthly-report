@@ -212,14 +212,13 @@ export default function OfficePersonnelForm({
             </div>
 
             <div className="grid md:grid-cols-1 gap-4">
-              <Input
-                type="number"
-                placeholder="Budgeted Revenue Impact"
-                value={entry.revenue_impact || ''}
-                onChange={(e) => handleUpdate(index, 'revenue_impact', e.target.value)}
-                disabled={disabled}
-                onBlur={() => handleSave(index)}
-                className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
+             <Input
+               placeholder="Budgeted Revenue Impact"
+               value={entry.revenue_impact || ''}
+               onChange={(e) => handleUpdate(index, 'revenue_impact', e.target.value)}
+               disabled={disabled}
+               onBlur={() => handleSave(index)}
+               className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
             </div>
 
             <Textarea

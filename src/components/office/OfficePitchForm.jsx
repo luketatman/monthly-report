@@ -220,27 +220,25 @@ export default function OfficePitchForm({
             {/* Revenue Impact Fields */}
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Current Year Revenue Impact</Label>
-                <Input
-                  type="number"
-                  placeholder="Estimated Current Year Revenue Impact"
-                  value={entry.budget_year_revenue_impact || ''}
-                  onChange={(e) => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)}
-                  disabled={!isSubmissionPeriod || saving}
-                  onBlur={() => handleSave(index)}
-                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
+               <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Current Year Revenue Impact</Label>
+               <Input
+                 placeholder="Estimated Current Year Revenue Impact"
+                 value={entry.budget_year_revenue_impact || ''}
+                 onChange={(e) => handleUpdate(index, 'budget_year_revenue_impact', e.target.value)}
+                 disabled={!isSubmissionPeriod || saving}
+                 onBlur={() => handleSave(index)}
+                 className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Total Revenue Impact (Approx. next 3 years)</Label>
-                <Input
-                  type="number"
-                  placeholder="Estimated Total Revenue Impact (Approx. next 3 years)"
-                  value={entry.total_revenue_impact || ''}
-                  onChange={(e) => handleUpdate(index, 'total_revenue_impact', e.target.value)}
-                  disabled={!isSubmissionPeriod || saving}
-                  onBlur={() => handleSave(index)}
-                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
+               <Label className="text-sm font-medium text-slate-700 mb-2 block">Estimated Total Revenue Impact (Approx. next 3 years)</Label>
+               <Input
+                 placeholder="Estimated Total Revenue Impact (Approx. next 3 years)"
+                 value={entry.total_revenue_impact || ''}
+                 onChange={(e) => handleUpdate(index, 'total_revenue_impact', e.target.value)}
+                 disabled={!isSubmissionPeriod || saving}
+                 onBlur={() => handleSave(index)}
+                 className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
               </div>
             </div>
 
@@ -293,15 +291,14 @@ export default function OfficePitchForm({
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-slate-700 mb-2 block">Square Footage</Label>
-                <Input
-                  type="number"
-                  placeholder="Square Footage"
-                  value={entry.square_footage || ''}
-                  onChange={(e) => handleUpdate(index, 'square_footage', e.target.value)}
-                  disabled={!isSubmissionPeriod || saving}
-                  onBlur={() => handleSave(index)}
-                  className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
+               <Label className="text-sm font-medium text-slate-700 mb-2 block">Square Footage</Label>
+               <Input
+                 placeholder="Square Footage"
+                 value={entry.square_footage || ''}
+                 onChange={(e) => handleUpdate(index, 'square_footage', e.target.value)}
+                 disabled={!isSubmissionPeriod || saving}
+                 onBlur={() => handleSave(index)}
+                 className="bg-slate-800 text-slate-50 border-slate-300 placeholder-slate-400" />
               </div>
 
               <div>
