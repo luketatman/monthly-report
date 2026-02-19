@@ -237,14 +237,14 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                         const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === region);
                         const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                        // Use manual YTD if available and non-zero, otherwise calculate from monthly
+                        // Use manual YTD if available, otherwise calculate from monthly
                         let ytdRevenue = latestData?.ytd_revenue;
                         let ytdBudget = latestData?.ytd_budget;
                         
-                        if (!ytdRevenue || !ytdBudget) {
+                        if (ytdRevenue === null || ytdRevenue === undefined || ytdBudget === null || ytdBudget === undefined) {
                             const calculated = calculateYTD(market, region);
-                            ytdRevenue = ytdRevenue || calculated.ytdRevenue;
-                            ytdBudget = ytdBudget || calculated.ytdBudget;
+                            ytdRevenue = ytdRevenue ?? calculated.ytdRevenue;
+                            ytdBudget = ytdBudget ?? calculated.ytdBudget;
                         }
 
                         return {
@@ -278,14 +278,14 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                 const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === filters.region);
                 const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                // Use manual YTD if available and non-zero, otherwise calculate from monthly
+                // Use manual YTD if available, otherwise calculate from monthly
                 let ytdRevenue = latestData?.ytd_revenue;
                 let ytdBudget = latestData?.ytd_budget;
                 
-                if (!ytdRevenue || !ytdBudget) {
+                if (ytdRevenue === null || ytdRevenue === undefined || ytdBudget === null || ytdBudget === undefined) {
                     const calculated = calculateYTD(market, filters.region);
-                    ytdRevenue = ytdRevenue || calculated.ytdRevenue;
-                    ytdBudget = ytdBudget || calculated.ytdBudget;
+                    ytdRevenue = ytdRevenue ?? calculated.ytdRevenue;
+                    ytdBudget = ytdBudget ?? calculated.ytdBudget;
                 }
 
                 return {
