@@ -215,20 +215,6 @@ export default function FinancialCommentary({ submissions, financialData, allFin
             }
         });
 
-        // Helper to calculate YTD from monthly data if YTD fields are empty/0
-        const calculateYTD = (market, region) => {
-            const marketData = allFinancialData.filter(fd => 
-                fd.market === market && 
-                fd.region === region &&
-                fd.month && fd.month.startsWith(filters.year.toString())
-            );
-            
-            const ytdRevenue = marketData.reduce((sum, fd) => sum + (fd.monthly_revenue || 0), 0);
-            const ytdBudget = marketData.reduce((sum, fd) => sum + (fd.monthly_budget || 0), 0);
-            
-            return { ytdRevenue, ytdBudget };
-        };
-
         if (filters.region === 'all') {
             const groupedByRegion = _.groupBy(allCommentaries, 'region');
             return Object.entries(groupedByRegion).map(([region, regionComments]) => {
@@ -237,15 +223,9 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                         const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === region);
                         const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                        // Use manual YTD if available, otherwise calculate from monthly
-                        let ytdRevenue = latestData?.ytd_revenue;
-                        let ytdBudget = latestData?.ytd_budget;
-                        
-                        if (ytdRevenue === null || ytdRevenue === undefined || ytdBudget === null || ytdBudget === undefined) {
-                            const calculated = calculateYTD(market, region);
-                            ytdRevenue = ytdRevenue ?? calculated.ytdRevenue;
-                            ytdBudget = ytdBudget ?? calculated.ytdBudget;
-                        }
+                        // Always use manual YTD from latest data
+                        const ytdRevenue = latestData?.ytd_revenue || 0;
+                        const ytdBudget = latestData?.ytd_budget || 0;
 
                         return {
                             market,
@@ -278,15 +258,9 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                 const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === filters.region);
                 const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                // Use manual YTD if available, otherwise calculate from monthly
-                let ytdRevenue = latestData?.ytd_revenue;
-                let ytdBudget = latestData?.ytd_budget;
-                
-                if (ytdRevenue === null || ytdRevenue === undefined || ytdBudget === null || ytdBudget === undefined) {
-                    const calculated = calculateYTD(market, filters.region);
-                    ytdRevenue = ytdRevenue ?? calculated.ytdRevenue;
-                    ytdBudget = ytdBudget ?? calculated.ytdBudget;
-                }
+                // Always use manual YTD from latest data
+                const ytdRevenue = latestData?.ytd_revenue || 0;
+                const ytdBudget = latestData?.ytd_budget || 0;
 
                 return {
                     market,
