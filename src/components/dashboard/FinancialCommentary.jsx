@@ -223,17 +223,13 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                         const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === region);
                         const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                        // Always use manual YTD from latest data
-                        const ytdRevenue = latestData?.ytd_revenue || 0;
-                        const ytdBudget = latestData?.ytd_budget || 0;
-
                         return {
                             market,
-                            commentaries: marketComments.filter(c => c.content),
-                            healthGrade: calculateHealthGrade(ytdRevenue, ytdBudget),
+                            commentaries: marketComments.filter(c => c.content), // Only show ones with actual content
+                            healthGrade: calculateHealthGrade(latestData?.ytd_revenue, latestData?.ytd_budget),
                             trend: calculateMarketTrend(market, region),
-                            ytdRevenue,
-                            ytdBudget,
+                            ytdRevenue: latestData?.ytd_revenue,
+                            ytdBudget: latestData?.ytd_budget,
                         };
                     });
 
@@ -258,17 +254,13 @@ export default function FinancialCommentary({ submissions, financialData, allFin
                 const marketFinancialData = financialData.filter(fd => fd.market === market && fd.region === filters.region);
                 const latestData = _.orderBy(marketFinancialData, ['month'], ['desc'])[0];
 
-                // Always use manual YTD from latest data
-                const ytdRevenue = latestData?.ytd_revenue || 0;
-                const ytdBudget = latestData?.ytd_budget || 0;
-
                 return {
                     market,
-                    commentaries: comments.filter(c => c.content),
-                    healthGrade: calculateHealthGrade(ytdRevenue, ytdBudget),
+                    commentaries: comments.filter(c => c.content), // Only show ones with actual content
+                    healthGrade: calculateHealthGrade(latestData?.ytd_revenue, latestData?.ytd_budget),
                     trend: calculateMarketTrend(market, filters.region),
-                    ytdRevenue,
-                    ytdBudget,
+                    ytdRevenue: latestData?.ytd_revenue,
+                    ytdBudget: latestData?.ytd_budget,
                 };
             });
         }
