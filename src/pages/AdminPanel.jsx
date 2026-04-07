@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FinancialData, Region, MonthlySubmission, OfficeSubmission } from "@/entities/all";
+import { FinancialData, Region, MonthlySubmission, OfficeSubmission } from "@/api/entities";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
