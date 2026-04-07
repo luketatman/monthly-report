@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { User } from "@/entities/User";
+import { User } from "@/api/entities";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, LogIn, BarChart3, ArrowLeft } from "lucide-react";
