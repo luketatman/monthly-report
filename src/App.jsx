@@ -71,7 +71,7 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router basename="/monthly-report">
+                    <Router>
           <NavigationTracker />
           <AuthenticatedApp />
         </Router>
