@@ -1,4 +1,3 @@
-
 import { STATIC_REGIONS } from '@/lib/staticRegions';
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { OfficeSubmission, FinancialData, Region, WinLoss, Pitch, PersonnelUpdate } from "@/entities/all";
@@ -229,10 +228,7 @@ export default function OfficeReport() {
 
       console.log("OfficeReport: Fetching existing submissions for market:", activeMarket.name, "month:", selectedMonth);
 
-      const existingSubmissions = await OfficeSubmission.filter({
-        market: activeMarket.name,
-        month: selectedMonth
-      });
+      const existingSubmissions = await safeApiCall(() => OfficeSubmission.filter({ market: activeMarket.name, month: selectedMonth }), []);
 
       console.log("OfficeReport: Found existing submissions:", existingSubmissions.length, existingSubmissions);
 
