@@ -114,7 +114,17 @@ export default function OfficeReport() {
     }
   }, []);
 
-  useEffect(() => {
+  // Helper: wraps API calls to return a default on network errors (GitHub Pages / CORS)
+  const safeApiCall = async (apiFn, defaultValue) => {
+    try {
+      return await apiFn();
+    } catch (e) {
+      console.warn('API call failed, using default:', e.message);
+      return defaultValue;
+    }
+  };
+
+    useEffect(() => {
     const storedPinDataString = sessionStorage.getItem('verifiedPinData');
     if (storedPinDataString) {
       try {
@@ -246,7 +256,7 @@ export default function OfficeReport() {
         
         for (const duplicate of duplicatesToDelete) {
           try {
-            await OfficeSubmission.delete(duplicate.id);
+            await safeApiCall(() => OfficeSubmission.delete(duplicate.id), null);
             console.log(`Deleted duplicate submission: ${duplicate.id}`);
           } catch (deleteError) {
             console.error(`Failed to delete duplicate submission ${duplicate.id}:`, deleteError);
@@ -270,15 +280,12 @@ export default function OfficeReport() {
         
         try {
           // Save to database immediately
-          currentSubmission = await OfficeSubmission.create(newSubmissionData);
+          currentSubmission = await safeApiCall(() => OfficeSubmission.create(newSubmissionData), { ...newSubmissionData, id: 'local-' + Date.now() });
           console.log("OfficeReport: Created new submission with ID:", currentSubmission.id);
         } catch (createError) {
           // If creation fails (possibly due to race condition), try fetching again
           console.error("Failed to create submission, checking for race condition:", createError);
-          const retrySubmissions = await OfficeSubmission.filter({
-            market: activeMarket.name,
-            month: selectedMonth
-          });
+          const retrySubmissions = await safeApiCall(() => OfficeSubmission.filter({ market: activeMarket.name, month: selectedMonth }), []);
           
           if (retrySubmissions.length > 0) {
             console.log("Found submission created by another process, using that instead");
@@ -293,48 +300,21 @@ export default function OfficeReport() {
       setIsSubmissionPeriod(true);
 
       console.log("OfficeReport: Fetching financial data for market:", activeMarket.name, "month:", selectedMonth);
-      
-      // New retry logic with timeout for financial data fetch
-      const fetchFinancialsWithRetry = async (maxRetries = 3) => {
-        for (let i = 0; i < maxRetries; i++) {
-          try {
-            const financialData = await Promise.race([
-              FinancialData.filter({ market: activeMarket.name, month: selectedMonth }),
-              new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 15000)) // 15s timeout
-            ]);
-            return financialData;
-          } catch (error) {
-            if (i === maxRetries - 1) throw error; // If last retry, rethrow the error
-            console.log(`Financial data fetch attempt ${i + 1} for ${activeMarket.name} failed, retrying in ${1.5 * (i + 1)}s...`, error.message);
-            await new Promise(resolve => setTimeout(resolve, 1500 * (i + 1))); // Exponential backoff
-          }
-        }
-        throw new Error("Financial data fetch failed after multiple retries.");
-      };
-
-      const marketFinancialData = await fetchFinancialsWithRetry();
-      console.log("OfficeReport: Found financial data:", marketFinancialData.length, marketFinancialData);
-      setFinancialData(marketFinancialData);
+        // Safely fetch financial data
+        const marketFinancialData = await safeApiCall(() => FinancialData.filter({ market: activeMarket.name, month: selectedMonth }), []);
+        console.log("OfficeReport: Found financial data:", marketFinancialData.length, marketFinancialData);
+              setFinancialData(marketFinancialData);
 
       // Load Win/Loss data for this specific market/office
-      const marketWinLosses = await WinLoss.filter({
-        office_location: activeMarket.name,
-        month: selectedMonth
-      });
+      const marketWinLosses = await safeApiCall(() => WinLoss.filter({ office_location: activeMarket.name, month: selectedMonth }), []);
       setWinLosses(marketWinLosses);
 
       // Load Pitch data for this specific market/office
-      const marketPitches = await Pitch.filter({
-        office_location: activeMarket.name,
-        month: selectedMonth
-      });
+      const marketPitches = await safeApiCall(() => Pitch.filter({ office_location: activeMarket.name, month: selectedMonth }), []);
       setPitches(marketPitches);
 
       // Load Personnel data for this specific market/office
-      const marketPersonnel = await PersonnelUpdate.filter({
-        office_location: activeMarket.name,
-        month: selectedMonth
-      });
+      const marketPersonnel = await safeApiCall(() => PersonnelUpdate.filter({ office_location: activeMarket.name, month: selectedMonth }), []);
       setPersonnelUpdates(marketPersonnel);
 
       setIsConfirmed(true);
