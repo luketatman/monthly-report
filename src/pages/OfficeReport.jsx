@@ -1,4 +1,5 @@
 
+import { STATIC_REGIONS } from '@/lib/staticRegions';
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { OfficeSubmission, FinancialData, Region, WinLoss, Pitch, PersonnelUpdate } from "@/entities/all";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -99,15 +100,15 @@ export default function OfficeReport() {
       setAllMarkets(markets);
     } catch (e) {
       console.error("Failed to load initial data:", e);
-      let errorMessage = e.message;
-      if (e.message === "Timeout") {
-          errorMessage = "Failed to load initial region data: The request timed out. Please check your internet connection and try refreshing.";
-      } else if (e.message === "Network Error") {
-          errorMessage = "A network error occurred while loading initial data. Please check your connection.";
-      } else {
-        errorMessage = `An unexpected error occurred while loading initial data: ${e.message}.`;
-      }
-      setError(errorMessage);
+      console.warn("API unavailable, using static region fallback data.");
+      // Use static fallback data when Base44 API is unavailable (e.g., GitHub Pages deployment)
+      const cleanedRegions = STATIC_REGIONS.map(region => ({
+        ...region,
+        markets: region.markets.map(market => market.trim().replace(/^[-\s]+/, '').trim())
+      }));
+      setAllRegions(cleanedRegions);
+      const markets = cleanedRegions.flatMap((r) => r.markets.map((m) => ({ name: m, region: r.name })));
+      setAllMarkets(markets);
     } finally {
       setPageLoading(false);
     }
