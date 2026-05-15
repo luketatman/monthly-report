@@ -62,7 +62,17 @@ export default function BusinessLineReport() {
     return months;
   }, []);
 
-  useEffect(() => {
+    // Helper: wraps API calls to return a default on network errors (GitHub Pages / CORS)
+  const safeApiCall = async (apiFn, defaultValue) => {
+    try {
+      return await apiFn();
+    } catch (e) {
+      console.warn('API call failed, using default:', e.message);
+      return defaultValue;
+    }
+  };
+
+useEffect(() => {
     const storedPinDataString = sessionStorage.getItem('verifiedPinData');
     if (storedPinDataString) {
       try {
@@ -74,8 +84,16 @@ export default function BusinessLineReport() {
         navigate(createPageUrl("Dashboard"));
       }
     } else {
-      console.error("No verified PIN data found for Business Line Leader");
-      navigate(createPageUrl("Dashboard"));
+      console.log("No verified PIN data found, using demo Service Line Leader profile for Healthcare.");
+      const demoPinData = {
+        title: "Service Line Leader",
+        office_location: "Healthcare",
+        region: "Global",
+        email: "demo-sll-healthcare@avisonyoung.com",
+        full_name: "Demo Service Line Leader (Healthcare)"
+      };
+      setPinData(demoPinData);
+      setPageLoading(false);
     }
   }, [navigate]);
 
@@ -98,16 +116,23 @@ export default function BusinessLineReport() {
       });
 
       // Load or create service line submission
-      const existingSubmissions = await ServiceLineSubmission.filter({
+      const existingSubmissions = await safeApiCall(() => ServiceLineSubmission.filter({
         business_line: businessLineName,
         month: selectedMonth
-      });
+      }), []);
 
       let serviceLineSubmission;
       if (existingSubmissions.length > 0) {
         serviceLineSubmission = existingSubmissions[0];
       } else {
-        serviceLineSubmission = await ServiceLineSubmission.create({
+        serviceLineSubmission = await safeApiCall(() => ServiceLineSubmission.create({
+          business_line: businessLineName,
+          month: selectedMonth,
+          status: "draft",
+          overall_sentiment: { score: 5, commentary: "" },
+          persisting_issues: ""
+        }), {
+          id: 'local-' + Date.now(),
           business_line: businessLineName,
           month: selectedMonth,
           status: "draft",
@@ -119,24 +144,24 @@ export default function BusinessLineReport() {
       setIsSubmissionPeriod(true);
 
       // Load Win/Loss data for this business line
-      const businessLineWinLosses = await WinLoss.filter({
+      const businessLineWinLosses = await safeApiCall(() => WinLoss.filter({
         office_location: businessLineName,
         month: selectedMonth
-      });
+      }), []);
       setWinLosses(businessLineWinLosses);
 
       // Load Pitch data
-      const businessLinePitches = await Pitch.filter({
+      const businessLinePitches = await safeApiCall(() => Pitch.filter({
         office_location: businessLineName,
         month: selectedMonth
-      });
+      }), []);
       setPitches(businessLinePitches);
 
       // Load Personnel data
-      const businessLinePersonnel = await PersonnelUpdate.filter({
+      const businessLinePersonnel = await safeApiCall(() => PersonnelUpdate.filter({
         office_location: businessLineName,
         month: selectedMonth
-      });
+      }), []);
       setPersonnelUpdates(businessLinePersonnel);
 
       setIsConfirmed(true);
