@@ -1,4 +1,5 @@
 
+import { STATIC_REGIONS } from '@/lib/staticRegions';
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { MonthlySubmission, FinancialData, Region, OfficeSubmission } from "@/entities/all";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -114,13 +115,10 @@ export default function MonthlyReport() {
       setAllRegions(uniqueRegions);
     } catch (e) {
       console.error("Failed to load initial data:", e);
-      let errorMessage = e.message;
-      if (e.message === "Timeout") {
-        errorMessage = "Failed to load initial region data: The request timed out."
-      } else if (e.message === "Network Error") {
-        errorMessage = "A network error occurred while loading initial data. Please check your connection."
-      }
-      setError(errorMessage);
+      console.warn("API unavailable, using static region fallback data for RMD.");
+      // Use static fallback data when Base44 API is unavailable (e.g., GitHub Pages deployment)
+      const filteredStatic = STATIC_REGIONS.filter(r => mainRegionNames.includes(r.name));
+      setAllRegions(filteredStatic);
     } finally {
       setPageLoading(false);
     }
