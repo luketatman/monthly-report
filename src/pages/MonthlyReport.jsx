@@ -126,6 +126,16 @@ export default function MonthlyReport() {
     }
   }, []);
 
+  // Helper: wraps API calls to return a default on network errors (GitHub Pages / CORS)
+  const safeApiCall = async (apiFn, defaultValue) => {
+    try {
+      return await apiFn();
+    } catch (e) {
+      console.warn('API call failed, using default:', e.message);
+      return defaultValue;
+    }
+  };
+
   useEffect(() => {
     const storedPinDataString = sessionStorage.getItem('verifiedPinData');
     if (storedPinDataString) {
@@ -143,13 +153,13 @@ export default function MonthlyReport() {
         navigate(createPageUrl("Dashboard"));
       }
     } else {
-      console.log("No verified PIN data found, using demo RMD profile for Central region.");
+      console.log("No verified PIN data found, using demo RMD profile for West region.");
       const demoPinData = {
         title: "RMD",
-        region: "Central",
-        office_location: "Central Region",
-        email: "demo-rmd-central@avisonyoung.com",
-        full_name: "Demo RMD (Central)"
+        region: "West",
+        office_location: "West Region",
+        email: "demo-rmd-west@avisonyoung.com",
+        full_name: "Demo RMD (West)"
       };
       setPinData(demoPinData);
       loadInitialData();
@@ -217,7 +227,7 @@ export default function MonthlyReport() {
         }
       };
 
-      const officeSubmissionsData = await fetchOfficeSubmissionsWithRetry();
+      const officeSubmissionsData = await safeApiCall(() => fetchOfficeSubmissionsWithRetry(), []);
       setOfficeSubmissions(officeSubmissionsData);
 
       const submittedOfficeSubmissions = officeSubmissionsData.filter(s => s.status === 'submitted');
@@ -261,7 +271,7 @@ export default function MonthlyReport() {
         }
       });
 
-      const existingSubmissions = await MonthlySubmission.filter({ region: selectedRegionObj.name, month: selectedMonth });
+      const existingSubmissions = await safeApiCall(() => MonthlySubmission.filter({ region: selectedRegionObj.name, month: selectedMonth }), []);
       let currentSubmission;
 
       // CRITICAL FIX: Handle duplicates and create immediately
@@ -307,7 +317,7 @@ export default function MonthlyReport() {
         };
         
         try {
-          currentSubmission = await MonthlySubmission.create(newSubmissionData);
+          currentSubmission = await safeApiCall(() => MonthlySubmission.create(newSubmissionData), { ...newSubmissionData, id: 'local-' + Date.now() });
           console.log("MonthlyReport: Created new RMD submission with ID:", currentSubmission.id);
         } catch (createError) {
           console.error("Failed to create RMD submission, checking for race condition:", createError);
@@ -344,7 +354,7 @@ export default function MonthlyReport() {
         }
       };
 
-      const financials = await fetchFinancialDataWithRetry();
+      const financials = await safeApiCall(() => fetchFinancialDataWithRetry(), []);
       setFinancialData(financials);
 
       const historicalMonths = ["2025-04", "2025-05"];
